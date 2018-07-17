@@ -5,27 +5,27 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
- export const ROOT = 'ROOT'
- export const NAMESPACE_ROOT = 'NAMESPACE_ROOT'
- export const CHILD = 'CHILD'
+ 
+export const ROOT = 'ROOT'
+export const NAMESPACE_ROOT = 'NAMESPACE_ROOT'
+export const CHILD = 'CHILD'
 
 const subspaceTypesEnhancer = (isRoot, namespace) => (createSubspace) => (store) => {
-    const subspace = createSubspace(store)
+   const subspace = createSubspace(store)
 
-    const subspaceTypes = []
+   const subspaceTypes = []
 
-    if (isRoot) {
-        subspaceTypes.push(ROOT)
-        subspaceTypes.push(NAMESPACE_ROOT)
-    } else if (namespace) {
-        subspaceTypes.push(NAMESPACE_ROOT)
-        subspaceTypes.push(CHILD)
-    } else {
-        subspaceTypes.push(CHILD)
-    }
+   if (isRoot) {
+       subspaceTypes.push(ROOT)
+       subspaceTypes.push(NAMESPACE_ROOT)
+   } else if (namespace && namespace.length > 0) {
+       subspaceTypes.push(NAMESPACE_ROOT)
+       subspaceTypes.push(CHILD)
+   } else {
+       subspaceTypes.push(CHILD)
+   }
 
-    return { ...subspace, subspaceTypes }
+   return { ...subspace, subspaceTypes }
 }
 
 export default subspaceTypesEnhancer

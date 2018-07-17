@@ -17,9 +17,9 @@ const verifyState = (state) => {
     return state
 }
 
-const subspaceEnhancer = (mapState, namespace) => applySubspaceMiddleware(applyToChildren((store) => ({
+const subspaceEnhancer = (mapState, namespace, transparent) => applySubspaceMiddleware(applyToChildren((store) => ({
     getState: (next) => () => verifyState(mapState(next(), store.rootStore.getState())),
-    dispatch: (next) => (action) => next(namespacedAction(namespace)(action))
+    dispatch: (next) => (action) => next(namespacedAction(namespace, transparent)(action))
 })))
 
 export default subspaceEnhancer

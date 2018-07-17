@@ -12,9 +12,9 @@ import wrapDisplayName from 'recompose/wrapDisplayName'
 import { subspace } from 'redux-subspace'
 import SubspaceProvider from './SubspaceProvider'
 
-const subspaced = (mapState, namespace) => {
+const subspaced = (mapState, namespace, options) => {
 
-    const subspaceDecorator = subspace(mapState, namespace)
+    const subspaceDecorator = subspace(mapState, namespace, options)
 
     return (WrappedComponent) => {
         

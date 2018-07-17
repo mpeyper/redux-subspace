@@ -6,6 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const globalAction = (action) => action.type ? { ...action, meta: { ...action.meta, globalAction: true } } : action
+const isNamespaced = (action) => action.meta && action.meta.namespaced
 
-export default globalAction
+export default isNamespaced

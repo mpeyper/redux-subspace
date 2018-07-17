@@ -5,19 +5,13 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
+ 
 import applySubspaceMiddleware from '../enhancers/applySubspaceMiddleware'
 import { subspaceRoot } from '../store/subspace'
-import { compose } from 'redux'
-
+ 
 const applyMiddleware = (...middlewares) => (createStore) => (reducer, preloadedState, enhancer) => {
     const store = createStore(reducer, preloadedState, enhancer)
-
-    if(store.subspaceOptions && typeof store.subspaceOptions.enhancer === "function") {
-        return subspaceRoot(store, { enhancer: compose(applySubspaceMiddleware(...middlewares), store.subspaceOptions.enhancer)})
-    }
-    
-    return subspaceRoot(store, { enhancer: applySubspaceMiddleware(...middlewares) })
+    return subspaceRoot(store, applySubspaceMiddleware(...middlewares))
 }
-
+ 
 export default applyMiddleware

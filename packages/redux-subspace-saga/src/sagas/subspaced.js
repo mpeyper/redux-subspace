@@ -34,8 +34,8 @@ const emitter = () => {
   }
 }
 
-const subspaced = (mapState, namespace) => {
-  const subspaceDecorator = subspace(mapState, namespace)
+const subspaced = (mapState, namespace, options) => {
+  const subspaceDecorator = subspace(mapState, namespace, options)
 
   return saga => {
     return function*(...args) {

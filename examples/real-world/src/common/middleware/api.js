@@ -13,7 +13,7 @@ const getNextPageUrl = response => {
     return null
   }
 
-  return nextLink.split(';')[0].slice(1, -1)
+  return nextLink.trim().split(';')[0].slice(1, -1)
 }
 
 // Fetches an API response and normalizes the result JSON according to schema.
@@ -111,6 +111,8 @@ export default store => next => action => {
   next(actionWith({ type: requestType }))
 
   const apiRoot = store.getState().configuration.API_ROOT
+  
+  console.log(apiRoot, endpoint)
 
   return callApi(apiRoot, endpoint, schema).then(
     response => next(actionWith({

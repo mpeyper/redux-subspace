@@ -7,9 +7,14 @@
  */
 
 import isGlobal from './isGlobal'
+import isNamespaced from './isNamespaced'
 
-const namespacedAction = (namespace) => (action) => namespace && !isGlobal(action, namespace) 
-    ? { ...action, type: `${namespace}/${action.type}` } 
-    : action
+const namespacedAction = (namespace, transparent = false) => action => {
+  if (!namespace || isGlobal(action, namespace) || (transparent && isNamespaced(action))) {
+    return action
+  }
+
+  return { ...action, type: `${namespace}/${action.type}`, meta: { ...action.meta, namespaced: true } }
+}
 
 export default namespacedAction
