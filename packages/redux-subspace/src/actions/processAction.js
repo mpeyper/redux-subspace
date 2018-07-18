@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import hasNamespace from '../actions/hasNamespace'
-import isGlobal from '../actions/isGlobal'
+import hasNamespace from './hasNamespace'
+import isGlobal from './isGlobal'
 
 const processAction = (namespace) => (action, callback, defaultValue) => {
     if (!namespace || isGlobal(action)) {
