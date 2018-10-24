@@ -40,11 +40,12 @@ describe('resolveParameters Tests', () => {
     expect(parameters.options).to.equal(DEFAULT_OPTIONS)
   })
 
-  it('should default options enhancer', () => {
+  it('should default options values', () => {
     const parameters = resolveParameters(mapState, 'namespace', {})
     expect(parameters.mapState).to.equal(mapState)
     expect(parameters.namespace).to.equal('namespace')
     expect(parameters.options.enhancer).to.equal(DEFAULT_OPTIONS.enhancer)
+    expect(parameters.options.transparentTo).to.equal(DEFAULT_OPTIONS.transparentTo)
   })
 
   it('should create mapstate from string', () => {
@@ -73,6 +74,15 @@ describe('resolveParameters Tests', () => {
     expect(parameters.mapState('expected')).to.equal('expected')
     expect(parameters.namespace).to.equal('')
     expect(parameters.options).to.equal(DEFAULT_OPTIONS)
+  })
+
+  it('should create transparentTo option from transparent', () => {
+    const parameters = resolveParameters(mapState, 'namespace', { transparent: true })
+    expect(parameters.mapState).to.equal(mapState)
+    expect(parameters.namespace).to.equal('namespace')
+    expect(parameters.options.enhancer).to.equal(DEFAULT_OPTIONS.enhancer)
+    expect(parameters.options.transparentTo[0].source).to.equal(/.*/.source)
+    expect(parameters.options.transparentTo.length).to.equal(1)
   })
 
   it('should validate valid parameters', () => {
@@ -112,6 +122,14 @@ describe('resolveParameters Tests', () => {
     expect(() => resolveParameters(mapState, 'namespace', { enhancer: '' })).to.throw(TypeError, 'options.enhancer must be a function.')
     expect(() => resolveParameters(mapState, 'namespace', { enhancer: {} })).to.throw(TypeError, 'options.enhancer must be a function.')
     expect(() => resolveParameters(mapState, 'namespace', { enhancer: [] })).to.throw(TypeError, 'options.enhancer must be a function.')
+  })
+
+  it('should validate invalid options transparentTo parameter', () => {
+    expect(() => resolveParameters(mapState, 'namespace', { transparentTo: false })).to.throw(TypeError, 'options.transparentTo must be an array.')
+    expect(() => resolveParameters(mapState, 'namespace', { transparentTo: 0 })).to.throw(TypeError, 'options.transparentTo must be an array.')
+    expect(() => resolveParameters(mapState, 'namespace', { transparentTo: '' })).to.throw(TypeError, 'options.transparentTo must be an array.')
+    expect(() => resolveParameters(mapState, 'namespace', { transparentTo: {} })).to.throw(TypeError, 'options.transparentTo must be an array.')
+    expect(() => resolveParameters(mapState, 'namespace', { transparentTo: () => {} })).to.throw(TypeError, 'options.transparentTo must be an array.')
   })
 
   it('should should sanitize options if invalid in production', () => {

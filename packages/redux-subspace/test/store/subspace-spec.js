@@ -110,6 +110,16 @@ describe('subspace Tests', () => {
         expect(subspacedStore2.rootStore).to.equal(store)
     })
 
+    it('should provide parent store on subspace', () => {
+        const subspacedStore1 = subspace("child1", { transparentTo: ['child3'] })(store)
+        const subspacedStore2 = subspace("child2")(subspacedStore1)
+        const subspacedStore3 = subspace("child3")(subspacedStore1)
+
+        expect(subspacedStore1.parentStore).to.equal(store)
+        expect(subspacedStore2.parentStore).to.equal(subspacedStore1)
+        expect(subspacedStore3.parentStore).to.equal(store)
+    })
+
     it('should provide full namespace subspace', () => {
         const subspacedStore1 = subspace("child1")(store)
         const subspacedStore2 = subspace("child2")(subspacedStore1)
